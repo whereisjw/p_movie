@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400&family=Source+Sans+3:wght@300;400&display=swap');
@@ -61,8 +62,8 @@ table {
 }
 body{
   font-family: 'Noto Sans', sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor}
+  background-color: black;
+  color:${(props) => props.theme.white.darker};
 }
 a{
   text-decoration: none;
@@ -73,14 +74,18 @@ a{
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const client = new QueryClient();
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    </RecoilRoot>
+    <QueryClientProvider client={client}>
+      <RecoilRoot>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
+      </RecoilRoot>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
