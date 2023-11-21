@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IGetMovie, getNowPlaying } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
@@ -19,6 +19,7 @@ const Loader = styled.div`
 /* makeImagePath */
 const Banner = styled.div<{ bgPhoto: string }>`
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -27,7 +28,8 @@ const Banner = styled.div<{ bgPhoto: string }>`
     url(${(props) => props.bgPhoto});
 `;
 const OriginalTitle = styled.h3`
-  font-size: 20px;
+  font-size: 16;
+  margin: 7px 10px;
 `;
 const Title = styled.h2`
   font-size: 70px;
@@ -35,8 +37,9 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  font-size: 35px;
+  font-size: 14px;
   width: 50%;
+  line-height: 150%;
 `;
 
 const Home = () => {
@@ -44,21 +47,72 @@ const Home = () => {
     queryKey: ["nowPlaying"],
     queryFn: getNowPlaying,
   });
+  console.log(data);
 
   return (
     <Wrapper>
       {isPending ? (
         <Loader>로딩중 뀨</Loader>
       ) : (
-        <>
+        <div>
           <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
             <OriginalTitle>{data?.results[0].original_title}</OriginalTitle>
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
-          <Slider />
-        </>
+          <Slider data={data} />
+        </div>
       )}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </Wrapper>
   );
 };

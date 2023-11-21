@@ -117,13 +117,10 @@ function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
   const openSearch = () => {
     setSearchOpen((prev) => !prev);
   };
-  useMotionValueEvent(scrollY, "change", () => {
-    console.log(scrollY.get());
-  });
   const background = useTransform(
     scrollY,
     [0, 80],

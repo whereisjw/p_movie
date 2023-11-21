@@ -32,7 +32,7 @@ export interface IGetMovie {
 export function getNowPlaying() {
   return axios
     .get(
-      `${BASE_URL}/movie/now_playing?language=ko-KR&page=10&api_key=${myKey}`
+      `${BASE_URL}/movie/now_playing?language=ko-KR&page=18&api_key=${myKey}`
     )
     .then((res) => res.data);
 }
