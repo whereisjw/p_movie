@@ -8,11 +8,14 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Nav = styled(motion.nav)`
   position: fixed;
+
+  z-index: 1;
   width: 100%;
   top: 0;
   background-color: black;
@@ -61,7 +64,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -113,11 +116,21 @@ const navVars = {
   end: { y: 0, transition: { ease: easeIn } },
   exit: { y: -100, transition: { ease: easeIn } },
 };
+
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
   const { scrollY } = useScroll();
+  const { register, handleSubmit } = useForm<IForm>();
+  const navigate = useNavigate();
+  const onValid = (data: IForm) => {
+    navigate(`/Search?keyword=${data.keyword}`);
+  };
   const openSearch = () => {
     setSearchOpen((prev) => !prev);
   };
@@ -126,6 +139,7 @@ function Header() {
     [0, 80],
     ["rgba(0, 0, 0, 1)", "rgba(0, 0, 0, 0)"]
   );
+
   return (
     <Nav
       style={{ background: background }}
@@ -160,9 +174,9 @@ function Header() {
           </Items>
         </Col>
         <Col>
-          <Search>
+          <Search onSubmit={handleSubmit(onValid)}>
             <Input
-              /*               animate={inputAnimation} */
+              {...register("keyword", { required: true, minLength: 2 })}
               animate={{ scaleX: searchOpen ? 1 : 0 }}
               placeholder="Search for movie or tv show..."
             />
