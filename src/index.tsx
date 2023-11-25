@@ -69,6 +69,25 @@ a{
   text-decoration: none;
   color:inherit;
 }
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #397524 #DFE9EB;
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #DFE9EB;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: red;
+}
+
 `;
 
 const root = ReactDOM.createRoot(

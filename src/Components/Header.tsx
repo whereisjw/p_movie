@@ -163,13 +163,11 @@ function Header() {
           </Logo>
           <Items>
             <Item>
-              <Link to="/">Home {homeMatch && <Line layoutId="line" />}</Link>
+              <Link to="/">영화 {homeMatch && <Line layoutId="line" />}</Link>
             </Item>
             <Item>
               {" "}
-              <Link to="/tv">
-                Tv Show {tvMatch && <Line layoutId="line" />}
-              </Link>
+              <Link to="/tv">시리즈 {tvMatch && <Line layoutId="line" />}</Link>
             </Item>
           </Items>
         </Col>

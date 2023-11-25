@@ -72,12 +72,16 @@ export function getUpcoming() {
 
 export function getVideos(id: any) {
   return axios
-    .get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${myKey}`)
+    .get(`${BASE_URL}/movie/${id}/videos?api_key=${myKey}`)
     .then((res) => res.data);
 }
 
 export function getDetail(id: any) {
-  return axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${myKey}&language=ko-KR`
-  );
+  return axios.get(`${BASE_URL}/movie/${id}?api_key=${myKey}&language=ko-KR`);
+}
+
+export function getSimilar(id: any) {
+  return axios
+    .get(`${BASE_URL}/movie/${id}/similar?language=ko-KR&api_key=${myKey}`)
+    .then((res) => res.data);
 }

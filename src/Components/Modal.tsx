@@ -3,14 +3,16 @@ import { motion, useScroll } from "framer-motion";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getVideos } from "../api";
+import { getDetail, getVideos } from "../api";
 import axios from "axios";
+import Similar from "./Similar";
 const OverLay = styled(motion.div)`
   position: fixed;
   top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
+  z-index: 99;
 `;
 
 const BigMovie = styled(motion.div)`
@@ -19,11 +21,12 @@ const BigMovie = styled(motion.div)`
   height: 80vh;
   background-color: ${(props) => props.theme.black.lighter};
   border-radius: 15px;
-  overflow: hidden;
-
+  overflow-x: hidden;
+  overflow-y: scroll;
   left: 0;
   right: 0;
   margin: 0 auto;
+  z-index: 99;
 `;
 
 const BigFigure = styled.figure`
@@ -46,8 +49,43 @@ const BigTitle = styled.h3`
 
 const BigOverView = styled.p`
   padding: 20px;
-  position: relative;
-  top: -60px;
+  font-size: 15px;
+  line-height: 150%;
+  word-spacing: 5px;
+`;
+
+const DetailList = styled.ul`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  .adult {
+    color: ${(props) => props.theme.red};
+    font-weight: bold;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    span:last-child::after {
+      content: "";
+    }
+    span::after {
+      content: ",";
+    }
+  }
+  li:last-child::after {
+    content: "";
+  }
+  li::after {
+    content: "|";
+    margin: 0 5px;
+    color: ${(props) => props.theme.white.lighter};
+    font-weight: lighter;
+  }
+  strong {
+    font-weight: bold;
+    margin-right: 5px;
+  }
 `;
 
 const Modal = () => {
@@ -56,11 +94,17 @@ const Modal = () => {
   const { scrollY, scrollYProgress } = useScroll();
   const { id } = useParams();
   const { isPending, error, data } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["getVideos"],
     queryFn: () => getVideos(id),
   });
-
-  /*   console.log(data.data.results[0].key); */
+  const {
+    isPending: detailPending,
+    error: detailError,
+    data: detailData,
+  } = useQuery({
+    queryKey: ["getDetail"],
+    queryFn: () => getDetail(id),
+  });
 
   return (
     <>
@@ -88,8 +132,29 @@ const Modal = () => {
                 <BigCover src="/no-image.jpg"></BigCover>
               )}
             </BigFigure>
-            <BigTitle></BigTitle>
-            <BigOverView></BigOverView>
+            <BigTitle>{detailData?.data.title}</BigTitle>
+
+            <DetailList>
+              <li>
+                <strong>
+                  {detailData?.data.release_date.split("-").join(".")}
+                </strong>
+                개봉
+              </li>
+              <li>
+                {detailData?.data.genres.slice(0, 3).map((v: any) => (
+                  <span>{v.name}</span>
+                ))}
+              </li>
+              <li>
+                <strong>{detailData?.data.runtime}</strong>분
+              </li>
+              <li className="adult">
+                {detailData?.data.adult ? "청소년관람불가" : "청소년관람가능"}
+              </li>
+            </DetailList>
+            <BigOverView>{detailData?.data.overview}</BigOverView>
+            <Similar id={id}></Similar>
           </>
         </BigMovie>
       )}

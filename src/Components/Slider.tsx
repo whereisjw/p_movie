@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   position: relative;
   height: 500px;
   overflow: hidden;
+  top: -100px;
 `;
 const Row = styled(motion.div)`
   display: grid;
@@ -38,7 +39,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   width: 245px;
   font-size: 50px;
   &:hover img {
-    filter: brightness(60%);
+    filter: brightness(120%);
   }
   figure {
     width: 100%;
@@ -46,6 +47,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
     img {
       width: 100%;
       height: 100%;
+      filter: brightness(80%);
     }
   }
   &:first-child {
