@@ -16,15 +16,18 @@ const Nav = styled(motion.nav)`
   position: fixed;
 
   z-index: 1;
-  width: 100%;
+  width: 100vw;
   top: 0;
   background-color: black;
+  background-image: url("./check-pattern.png");
+  background-size: 17px;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
 `;
 const Center = styled(motion.div)`
   display: flex;
+
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
@@ -149,7 +152,7 @@ function Header() {
       variants={navVars}>
       <Center
         initial={{ width: "100%" }}
-        animate={{ width: "80%" }}
+        animate={{ width: "90%" }}
         transition={{ ease: easeOut, duration: 3 }}>
         <Col>
           <Logo

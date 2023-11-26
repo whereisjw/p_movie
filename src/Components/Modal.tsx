@@ -23,6 +23,7 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow-x: hidden;
   overflow-y: scroll;
+
   left: 0;
   right: 0;
   margin: 0 auto;

@@ -1,13 +1,16 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, easeIn, motion } from "framer-motion";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { makeImagePath } from "../api";
 import { useMatch, useNavigate } from "react-router-dom";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 const Wrapper = styled.div`
   position: relative;
-  height: 500px;
-  overflow: hidden;
-  top: -100px;
+  height: 290px;
+  overflow: visible;
+
+  width: 80%;
+  margin: 0 auto;
 `;
 const Row = styled(motion.div)`
   display: grid;
@@ -15,9 +18,10 @@ const Row = styled(motion.div)`
   padding: 20px 0;
   gap: 5px;
   position: absolute;
-  top: 100px;
+
+  top: 0;
+
   width: 100%;
-  left: 0;
 `;
 
 const rowVars = {
@@ -33,11 +37,28 @@ const rowVars = {
   },
 };
 
-const Box = styled(motion.div)<{ bgphoto: string }>`
+const rowVars2 = {
+  //window.innerWidth를 사용 이게 픽셀로 주는것보다 더 좋을듯
+  start: {
+    x: -window.innerWidth,
+  },
+  end: {
+    x: 0,
+  },
+  exit: {
+    x: +window.innerWidth,
+  },
+};
+
+const Box = styled(motion.div)`
+  position: relative;
+  cursor: pointer;
+  margin: 0 auto;
   background-color: white;
-  height: 360px;
-  width: 245px;
+  height: 240px;
+  width: 185px;
   font-size: 50px;
+  overflow: hidden;
   &:hover img {
     filter: brightness(120%);
   }
@@ -75,9 +96,9 @@ const boxVars = {
 const Info = styled(motion.div)`
   position: absolute;
   width: 100%;
-  bottom: -80px;
+  bottom: 0;
   padding: 5px;
-  background-color: ${(props) => props.theme.black.lighter};
+  background: transparent;
   opacity: 0;
   padding-left: 10px;
   height: 80px;
@@ -101,32 +122,92 @@ const Year = styled.span`
   margin-left: 5px;
 `;
 
+const Point = styled.span`
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background-color: yellow;
+  transform: rotate(45deg);
+`;
+
+const Number = styled.span`
+  position: absolute;
+  color: ${(props) => props.theme.white.lighter};
+
+  top: 5px;
+  right: 5px;
+  font-weight: bold;
+  font-size: 17px;
+`;
+
+const RightButton = styled.div`
+  position: absolute;
+  font-size: 50px;
+  cursor: pointer;
+  width: 55px;
+  height: 55px;
+  right: -55px;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: brightness(60%);
+  &:hover {
+    filter: brightness(110%);
+  }
+`;
+const LeftButton = styled.div`
+  position: absolute;
+  cursor: pointer;
+  font-size: 50px;
+  width: 55px;
+  height: 55px;
+  left: -55px;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: brightness(60%);
+  &:hover {
+    filter: brightness(110%);
+  }
+`;
+
 const Slider = ({ data }: any) => {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving((leaving) => !leaving);
   const increaseindex = () => {
+    setDirection("r");
+    if (leaving) return;
     if (data) {
-      if (leaving) return;
       toggleLeaving();
       const totalMovies = data?.results.length;
       const maxIndex = Math.ceil(totalMovies / 6);
       setIndex((prev) => (prev == 2 ? 0 : prev + 1));
     }
   };
+  const decreaseindex = () => {
+    setDirection("l");
+    if (leaving) return;
+    if (data) {
+      toggleLeaving();
+      const totalMovies = data?.results.length;
+      const maxIndex = Math.ceil(totalMovies / 6);
+      setIndex((prev) => (prev == 0 ? 2 : prev - 1));
+    }
+  };
 
   const navigate = useNavigate();
   const onBoxClicked = (id: number) => navigate(`/movies/${id}`);
-
+  const [direction, setDirection] = useState("");
   return (
     <Wrapper>
       <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
         <Row
-          variants={rowVars}
+          variants={direction == "r" ? rowVars : rowVars2}
           initial="start"
           animate="end"
           exit="exit"
-          transition={{ type: "tween", duration: 1 }}
+          transition={{ type: "spring", duration: 2 }}
           key={index}>
           {data?.results
             .slice(offset * index, offset * index + offset)
@@ -156,11 +237,27 @@ const Slider = ({ data }: any) => {
                       <Year>{movie.release_date.split("-")[0]}</Year>
                     </h4>
                   </Info>
+                  <Point
+                    style={{
+                      background:
+                        movie.vote_average.toFixed(1) >= 8
+                          ? "green"
+                          : movie.vote_average.toFixed(1) >= 7
+                          ? "orange"
+                          : "red",
+                    }}></Point>
+                  <Number>{movie.vote_average.toFixed(1)}</Number>
                 </Box>
               </>
             ))}
         </Row>
       </AnimatePresence>
+      <RightButton onClick={increaseindex}>
+        <FaChevronRight />
+      </RightButton>
+      <LeftButton onClick={decreaseindex}>
+        <FaChevronLeft />
+      </LeftButton>
     </Wrapper>
   );
 };

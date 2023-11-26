@@ -14,9 +14,15 @@ import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useMatch, useNavigate, Outlet } from "react-router-dom";
 import { MdLocalMovies } from "react-icons/md";
 import { CiPlay1 } from "react-icons/ci";
-const Wrapper = styled.div`
-  background-color: black;
+import Category from "../Components/Category";
+import { MdMovieCreation, MdMovieEdit } from "react-icons/md";
+import { BiSolidCameraMovie } from "react-icons/bi";
+import { relative } from "path";
+const Wrapper = styled(motion.div)`
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1));
   overflow-x: hidden;
+  background-image: url("./line-pattern.png");
+  background-size: 17px;
 `;
 
 const Loader = styled.div`
@@ -84,6 +90,10 @@ const PlayButton = styled(motion.div)`
   }
 `;
 
+const Wrap = styled.div`
+  position: relative;
+`;
+
 const BannerFig = styled(motion.div)`
   top: 0;
   bottom: 0;
@@ -95,6 +105,34 @@ const BannerFig = styled(motion.div)`
   background-repeat: no-repeat;
   background-size: cover;
 `;
+const Cate = styled.div`
+  margin: 0 auto;
+  width: 80%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  span {
+    font-weight: bold;
+  }
+`;
+
+const rowVars = {
+  //window.innerWidth를 사용 이게 픽셀로 주는것보다 더 좋을듯
+  start: {
+    x: window.innerWidth,
+    filter: "brightness(200%)",
+  },
+  end: {
+    x: 0,
+    filter: "brightness(40%)",
+
+    transition: { duration: 1 },
+  },
+  exit: {
+    x: window.innerWidth,
+    filter: "brightness(100%)",
+  },
+};
 
 const Home = () => {
   const {
@@ -130,32 +168,20 @@ const Home = () => {
   const handleIndexClick = () => {
     setIndex((index) => (index > 2 ? 0 : index + 1));
   };
-  const rowVars = {
-    //window.innerWidth를 사용 이게 픽셀로 주는것보다 더 좋을듯
-    start: {
-      x: window.innerWidth,
-      filter: "brightness(200%)",
-    },
-    end: {
-      x: 0,
-      filter: "brightness(40%)",
-
-      transition: { duration: 1 },
-    },
-    exit: {
-      x: window.innerWidth,
-      filter: "brightness(100%)",
-    },
-  };
 
   return (
     <>
-      <Wrapper>
+      <Wrapper
+        initial={{ backgroundPosition: "0 0" }}
+        animate={{
+          backgroundPosition: "0 -100%",
+        }}
+        transition={{ ease: "easeIn", repeat: Infinity, duration: 100 }}>
         {popPending ? (
           <Loader>로딩중 뀨</Loader>
         ) : (
           <>
-            <div>
+            <Wrap>
               <Banner>
                 <AnimatePresence initial={false}>
                   <BannerFig
@@ -215,12 +241,28 @@ const Home = () => {
                   </PlayButton>
                 </ButtonBox>
               </Banner>
+              <Cate>
+                {" "}
+                <BiSolidCameraMovie />
+                <span>현재 상영 영화</span>
+              </Cate>
 
-              <Slider data={popData} />
-              <Slider data={topData} />
               <Slider data={nowData} />
+              <Cate>
+                {" "}
+                <MdMovieEdit />
+                <span>평점 높은 영화</span>
+              </Cate>
+              <Slider data={topData} />
+
+              <Cate>
+                {" "}
+                <MdMovieCreation />
+                <span>개발자 추천 영화</span>
+              </Cate>
+              <Slider data={popData} />
               <AnimatePresence>{bigMovieMatch ? <></> : null}</AnimatePresence>
-            </div>
+            </Wrap>
             <Outlet />
           </>
         )}

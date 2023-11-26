@@ -48,7 +48,7 @@ export function getNowPlaying() {
 export function getPopular() {
   return axios
     .get(
-      `${BASE_URL}/movie/popular?language=ko-KR&page=1sort_by=popularity.desc&api_key=${myKey}`
+      `${BASE_URL}/movie/popular?language=ko-KR&page=2sort_by=popularity.desc&api_key=${myKey}`
     )
     .then((res) => res.data);
 }
@@ -83,5 +83,17 @@ export function getDetail(id: any) {
 export function getSimilar(id: any) {
   return axios
     .get(`${BASE_URL}/movie/${id}/similar?language=ko-KR&api_key=${myKey}`)
+    .then((res) => res.data);
+}
+
+export function getCredits(id: any) {
+  return axios(
+    `${BASE_URL}/movie/${id}/credits?api_key=${myKey}&language=ko-KR`
+  ).then((res) => res.data.cast);
+}
+
+export function getTv(종류: any) {
+  return axios
+    .get(`${BASE_URL}/tv/${종류}?api_key=${myKey}&language=ko-KR`)
     .then((res) => res.data);
 }
