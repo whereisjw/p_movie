@@ -5,6 +5,7 @@ import Search from "./Pages/Search";
 import Tv from "./Pages/Tv";
 import Header from "./Components/Header";
 import Modal from "./Components/Modal";
+import TvModal from "./Components/TvModal";
 
 const Router = () => {
   return (
@@ -15,7 +16,9 @@ const Router = () => {
           <Route path="/" element={<Home />}>
             <Route path="/movies/:id" element={<Modal />}></Route>
           </Route>
-          <Route path="/tv" element={<Tv />}></Route>
+          <Route path="/tv" element={<Tv />}>
+            <Route path="/tv/:id" element={<TvModal />}></Route>
+          </Route>
           <Route path="/search" element={<Search />}></Route>
         </Routes>
       </BrowserRouter>

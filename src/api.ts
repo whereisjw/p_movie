@@ -92,8 +92,31 @@ export function getCredits(id: any) {
   ).then((res) => res.data.cast);
 }
 
-export function getTv(종류: any) {
+export function getTv(sort: any) {
   return axios
-    .get(`${BASE_URL}/tv/${종류}?api_key=${myKey}&language=ko-KR`)
+    .get(`${BASE_URL}/tv/${sort}?api_key=${myKey}&language=ko-KR`)
     .then((res) => res.data);
+}
+
+export function getTvDetail(id: any) {
+  return axios
+    .get(`${BASE_URL}/tv/${id}?api_key=${myKey}&language=ko-KR`)
+    .then((res) => res.data);
+}
+export function getTvVideos(id: any) {
+  return axios
+    .get(`${BASE_URL}/tv/${id}/videos?api_key=${myKey}`)
+    .then((res) => res.data);
+}
+
+export function getTvSimilar(id: any) {
+  return axios
+    .get(`${BASE_URL}/tv/${id}/similar?language=ko-KR&api_key=${myKey}`)
+    .then((res) => res.data);
+}
+
+export function getTvCredits(id: any) {
+  return axios(
+    `${BASE_URL}/tv/${id}/credits?api_key=${myKey}&language=ko-KR`
+  ).then((res) => res.data.cast);
 }

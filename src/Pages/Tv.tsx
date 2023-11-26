@@ -4,6 +4,7 @@ import {
   getNowPlaying,
   getPopular,
   getTop_rated,
+  getTv,
   getVideos,
 } from "../api";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ import Category from "../Components/Category";
 import { MdMovieCreation, MdMovieEdit } from "react-icons/md";
 import { BiSolidCameraMovie } from "react-icons/bi";
 import { relative } from "path";
+import TvSlider from "../Components/TvSlider";
 const Wrapper = styled(motion.div)`
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1));
   overflow-x: hidden;
@@ -139,26 +141,27 @@ const Tv = () => {
     isPending: nowPending,
     error: nowErr,
     data: nowData,
-  } = useQuery<IGetMovie>({
+  } = useQuery({
     queryKey: ["nowPlaying"],
-    queryFn: getNowPlaying,
+    queryFn: () => getTv("on_the_air"),
   });
 
   const {
     isPending: popPending,
     error: popErr,
     data: popData,
-  } = useQuery<IGetMovie>({
+  } = useQuery({
     queryKey: ["popular"],
-    queryFn: getPopular,
+    queryFn: () => getTv("popular"),
   });
+
   const {
     isPending: topPending,
     error: topErr,
     data: topData,
-  } = useQuery<IGetMovie>({
+  } = useQuery({
     queryKey: ["top_rated"],
-    queryFn: getTop_rated,
+    queryFn: () => getTv("top_rated"),
   });
 
   const navigate = useNavigate();
@@ -193,7 +196,7 @@ const Tv = () => {
                     transition={{ duration: 1 }}
                     style={{
                       backgroundImage: `url(${makeImagePath(
-                        popData?.results[index].backdrop_path || ""
+                        topData?.results[index].backdrop_path || ""
                       )})`,
                     }}></BannerFig>
                 </AnimatePresence>
@@ -202,26 +205,20 @@ const Tv = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 5 }}>
-                  {popData?.results[index].original_title}
+                  {topData?.results[index].original_name}
                 </OriginalTitle>
                 <Title
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 5 }}>
-                  {popData?.results[index].title}
+                  {topData?.results[index].name}
                 </Title>
-                <Overview
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 5 }}>
-                  {popData?.results[index].overview}
-                </Overview>
+
                 <ButtonBox>
                   <PlayButton
                     onClick={() =>
-                      navigate(`/movies/${popData?.results[index].id}`)
+                      navigate(`/tv/${topData?.results[index].id}`)
                     }
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -241,26 +238,26 @@ const Tv = () => {
                   </PlayButton>
                 </ButtonBox>
               </Banner>
-              <Cate>
-                {" "}
-                <BiSolidCameraMovie />
-                <span>현재 상영 영화</span>
-              </Cate>
 
-              <Slider data={nowData} />
               <Cate>
                 {" "}
                 <MdMovieEdit />
-                <span>평점 높은 영화</span>
+                <span>최고 평점 프로그램</span>
               </Cate>
-              <Slider data={topData} />
-
+              <TvSlider data={topData} />
+              <Cate>
+                {" "}
+                <BiSolidCameraMovie />
+                <span>최신 프로그램</span>
+              </Cate>
+              <TvSlider data={nowData} />
               <Cate>
                 {" "}
                 <MdMovieCreation />
-                <span>개발자 추천 영화</span>
+                <span>인기 TV SHOW</span>
               </Cate>
-              <Slider data={popData} />
+              <TvSlider data={popData} />
+
               <AnimatePresence>{bigMovieMatch ? <></> : null}</AnimatePresence>
             </Wrap>
             <Outlet />

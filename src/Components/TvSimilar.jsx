@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { RiMovie2Fill } from "react-icons/ri";
-import { getCredits, getSimilar, getTvCredits, makeImagePath } from "../api";
+import { getCredits, getSimilar, getTvSimilar, makeImagePath } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
@@ -83,7 +83,7 @@ const CreditBox = styled.figure`
   }
 `;
 
-const Similar = ({ id: string }) => {
+const TvSimilar = ({ id: string }) => {
   const params = useParams();
   const {
     isPending: SimilarLoading,
@@ -91,7 +91,7 @@ const Similar = ({ id: string }) => {
     data: SimilarData,
   } = useQuery({
     queryKey: ["SimilarData"],
-    queryFn: () => getSimilar(params.id),
+    queryFn: () => getTvSimilar(params.id),
   });
 
   const {
@@ -100,7 +100,7 @@ const Similar = ({ id: string }) => {
     data: creditData,
   } = useQuery({
     queryKey: ["creditData"],
-    queryFn: () => getTvCredits(params.id),
+    queryFn: () => getCredits(params.id),
   });
 
   return (
@@ -165,4 +165,4 @@ const Similar = ({ id: string }) => {
   );
 };
 
-export default Similar;
+export default TvSimilar;
