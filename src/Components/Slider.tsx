@@ -234,7 +234,11 @@ const Slider = ({ data }: any) => {
                   <Info variants={infoVars}>
                     <h4>
                       {movie.title}
-                      <Year>{movie.release_date.split("-")[0]}</Year>
+                      <Year>
+                        {movie.release_date
+                          ? movie.release_date.split("-")[0]
+                          : ""}
+                      </Year>
                     </h4>
                   </Info>
                   <Point

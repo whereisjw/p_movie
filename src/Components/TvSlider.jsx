@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 `;
 const Row = styled(motion.div)`
   display: grid;
+
   grid-template-columns: repeat(6, 1fr);
   padding: 20px 0;
   gap: 5px;
@@ -40,13 +41,13 @@ const rowVars = {
 const rowVars2 = {
   //window.innerWidth를 사용 이게 픽셀로 주는것보다 더 좋을듯
   start: {
-    x: -window.innerWidth,
+    x: -window.innerWidth - 100,
   },
   end: {
     x: 0,
   },
   exit: {
-    x: +window.innerWidth,
+    x: +window.innerWidth + 100,
   },
 };
 
@@ -182,7 +183,7 @@ const TvSlider = ({ data }) => {
       toggleLeaving();
       const totalMovies = data?.results.length;
       const maxIndex = Math.ceil(totalMovies / 6);
-      setIndex((prev) => (prev == 2 ? 0 : prev + 1));
+      setIndex((prev) => (prev === 2 ? 0 : prev + 1));
     }
   };
   const decreaseindex = () => {
@@ -192,7 +193,7 @@ const TvSlider = ({ data }) => {
       toggleLeaving();
       const totalMovies = data?.results.length;
       const maxIndex = Math.ceil(totalMovies / 6);
-      setIndex((prev) => (prev == 0 ? 2 : prev - 1));
+      setIndex((prev) => (prev === 0 ? 2 : prev - 1));
     }
   };
 
@@ -203,7 +204,7 @@ const TvSlider = ({ data }) => {
     <Wrapper>
       <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
         <Row
-          variants={direction == "r" ? rowVars : rowVars2}
+          variants={direction === "r" ? rowVars : rowVars2}
           initial="start"
           animate="end"
           exit="exit"

@@ -106,7 +106,7 @@ const Modal = () => {
     queryKey: ["getDetail"],
     queryFn: () => getDetail(id),
   });
-
+  const loading = isPending || detailPending;
   return (
     <>
       <OverLay
@@ -115,7 +115,7 @@ const Modal = () => {
         exit={{ opacity: 0 }}
         onClick={overLayCLick}
       />
-      {isPending ? (
+      {loading ? (
         <p>로딩중...</p>
       ) : (
         <BigMovie style={{ top: scrollY.get() + 100 }} layoutId={id}>
@@ -125,35 +125,42 @@ const Modal = () => {
                 <iframe
                   width="560"
                   height="315"
-                  src={`https://www.youtube.com/embed/${data?.results[1].key}`}
+                  src={`https://www.youtube.com/embed/${
+                    data && data?.results[1].key
+                  }`}
                   allowFullScreen
                 />
               ) : (
                 <BigCover src="/no-image.jpg"></BigCover>
               )}
             </BigFigure>
-            <BigTitle>{detailData?.data.title}</BigTitle>
+            <BigTitle>{detailData && detailData.data.title}</BigTitle>
 
             <DetailList>
               <li>
                 <strong>
-                  {detailData?.data.release_date.split("-").join(".")}
+                  {detailData?.data.release_date
+                    ? detailData?.data.release_date.split("-").join(".")
+                    : ""}
                 </strong>
                 개봉
               </li>
               <li>
-                {detailData?.data.genres.slice(0, 3).map((v: any) => (
-                  <span>{v.name}</span>
-                ))}
+                {detailData &&
+                  detailData?.data.genres
+                    .slice(0, 3)
+                    .map((v: any) => <span>{v.name}</span>)}
               </li>
               <li>
-                <strong>{detailData?.data.runtime}</strong>분
+                <strong>{detailData && detailData?.data.runtime}</strong>분
               </li>
               <li className="adult">
-                {detailData?.data.adult ? "청소년관람불가" : "청소년관람가능"}
+                {detailData && detailData?.data.adult
+                  ? "청소년관람불가"
+                  : "청소년관람가능"}
               </li>
             </DetailList>
-            <BigOverView>{detailData?.data.overview}</BigOverView>
+            <BigOverView>{detailData && detailData?.data.overview}</BigOverView>
             <Similar id={id}></Similar>
           </>
         </BigMovie>

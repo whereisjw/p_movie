@@ -107,7 +107,7 @@ const TvModal = () => {
     queryKey: ["getDetail"],
     queryFn: () => getTvDetail(id),
   });
-  console.log(data);
+
   return (
     <>
       <OverLay
@@ -139,17 +139,22 @@ const TvModal = () => {
             <DetailList>
               <li>
                 <strong>
-                  {detailData?.first_air_date.split("-").join(".")}
+                  {detailData.first_air_date &&
+                    detailData?.first_air_date.split("-").join(".")}
                 </strong>
                 방송
               </li>
               <li>
-                {detailData?.genres.slice(0, 1).map((v) => (
-                  <span>{v.name}</span>
-                ))}
+                {detailData.genres &&
+                  detailData?.genres
+                    .slice(0, 1)
+                    .map((v) => <span>{v.name}</span>)}
               </li>
               <li>
-                <strong>{detailData?.seasons.length}</strong>시즌
+                <strong>
+                  {detailData?.seasons && detailData?.seasons.length}
+                </strong>
+                시즌
               </li>
               <li className="adult">
                 {detailData?.adult ? "청소년관람불가" : "청소년관람가능"}

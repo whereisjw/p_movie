@@ -169,104 +169,108 @@ const Home = () => {
     setIndex((index) => (index > 2 ? 0 : index + 1));
   };
 
+  let HomeLoading = topPending || popPending || nowPending;
   return (
     <>
-      <Wrapper
-        initial={{ backgroundPosition: "0 0" }}
-        animate={{
-          backgroundPosition: "0 -100%",
-        }}
-        transition={{ ease: "easeIn", repeat: Infinity, duration: 100 }}>
-        {popPending ? (
-          <Loader>로딩중 뀨</Loader>
-        ) : (
-          <>
-            <Wrap>
-              <Banner>
-                <AnimatePresence initial={false}>
-                  <BannerFig
-                    key={index}
-                    variants={rowVars}
-                    initial="start"
-                    animate="end"
-                    exit="exit"
-                    transition={{ duration: 1 }}
-                    style={{
-                      backgroundImage: `url(${makeImagePath(
-                        popData?.results[index].backdrop_path || ""
-                      )})`,
-                    }}></BannerFig>
+      {HomeLoading ? (
+        <div>로딩중...</div>
+      ) : (
+        <Wrapper
+          initial={{ backgroundPosition: "0 0" }}
+          animate={{
+            backgroundPosition: "0 -100%",
+          }}
+          transition={{ ease: "easeIn", repeat: Infinity, duration: 100 }}>
+          {popPending ? (
+            <Loader>로딩중</Loader>
+          ) : (
+            <>
+              <Wrap>
+                <Banner>
+                  <AnimatePresence initial={false}>
+                    <BannerFig
+                      key={index}
+                      variants={rowVars}
+                      initial="start"
+                      animate="end"
+                      exit="exit"
+                      transition={{ duration: 1 }}
+                      style={{
+                        backgroundImage: `url(${makeImagePath(
+                          popData?.results[index].backdrop_path || ""
+                        )})`,
+                      }}></BannerFig>
+                  </AnimatePresence>
+                  <OriginalTitle
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 5 }}>
+                    {popData?.results[index].original_title}
+                  </OriginalTitle>
+                  <Title
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 5 }}>
+                    {popData?.results[index].title}
+                  </Title>
+                  <Overview
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 5 }}>
+                    {popData?.results[index].overview}
+                  </Overview>
+                  <ButtonBox>
+                    <PlayButton
+                      onClick={() =>
+                        navigate(`/movies/${popData?.results[index].id}`)
+                      }
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 5 }}>
+                      <CiPlay1 />
+                      티저 재생
+                    </PlayButton>
+                    <PlayButton
+                      onClick={handleIndexClick}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 5 }}>
+                      <MdLocalMovies />
+                      영화 추천
+                    </PlayButton>
+                  </ButtonBox>
+                </Banner>
+                <Cate>
+                  <BiSolidCameraMovie />
+                  <span>현재 상영 영화</span>
+                </Cate>
+
+                <Slider data={nowData && nowData} />
+                <Cate>
+                  <MdMovieEdit />
+                  <span>평점 높은 영화</span>
+                </Cate>
+                <Slider data={topData && topData} />
+
+                <Cate>
+                  <MdMovieCreation />
+                  <span>이달의 추천 영화</span>
+                </Cate>
+                <Slider data={popData && popData} />
+                <AnimatePresence>
+                  {bigMovieMatch ? <></> : null}
                 </AnimatePresence>
-                <OriginalTitle
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 5 }}>
-                  {popData?.results[index].original_title}
-                </OriginalTitle>
-                <Title
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 5 }}>
-                  {popData?.results[index].title}
-                </Title>
-                <Overview
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 5 }}>
-                  {popData?.results[index].overview}
-                </Overview>
-                <ButtonBox>
-                  <PlayButton
-                    onClick={() =>
-                      navigate(`/movies/${popData?.results[index].id}`)
-                    }
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 5 }}>
-                    <CiPlay1 />
-                    티저 재생
-                  </PlayButton>
-                  <PlayButton
-                    onClick={handleIndexClick}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 5 }}>
-                    <MdLocalMovies />
-                    영화 추천
-                  </PlayButton>
-                </ButtonBox>
-              </Banner>
-              <Cate>
-                {" "}
-                <BiSolidCameraMovie />
-                <span>현재 상영 영화</span>
-              </Cate>
-
-              <Slider data={nowData} />
-              <Cate>
-                {" "}
-                <MdMovieEdit />
-                <span>평점 높은 영화</span>
-              </Cate>
-              <Slider data={topData} />
-
-              <Cate>
-                {" "}
-                <MdMovieCreation />
-                <span>개발자 추천 영화</span>
-              </Cate>
-              <Slider data={popData} />
-              <AnimatePresence>{bigMovieMatch ? <></> : null}</AnimatePresence>
-            </Wrap>
-            <Outlet />
-          </>
-        )}
-      </Wrapper>
+              </Wrap>
+              <Outlet />
+            </>
+          )}
+        </Wrapper>
+      )}
     </>
   );
 };

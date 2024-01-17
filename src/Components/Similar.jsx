@@ -100,68 +100,75 @@ const Similar = ({ id: string }) => {
     data: creditData,
   } = useQuery({
     queryKey: ["creditData"],
-    queryFn: () => getTvCredits(params.id),
+    queryFn: () => getCredits(params.id),
   });
+  const loading = SimilarLoading || creditLoading;
 
   return (
-    <Wrapper>
-      <Title>
-        <span>
-          <RiMovie2Fill />
-          출연진
-        </span>
+    <>
+      {loading ? (
+        <div>로딩중</div>
+      ) : (
+        <Wrapper>
+          <Title>
+            <span>
+              <RiMovie2Fill />
+              출연진
+            </span>
 
-        <TitleLine></TitleLine>
-      </Title>
-      <CreditBox>
-        {creditLoading ? (
-          <p>로딩중뀨</p>
-        ) : (
-          creditData.slice(0, 8).map((cast, index) => (
-            <div key={cast.id}>
-              <figure>
-                <img
-                  src={
-                    cast.profile_path
-                      ? makeImagePath(cast.profile_path, "w500")
-                      : "/no-image.jpg"
-                  }
-                  alt=""
-                />
-              </figure>
-              <figcaption>
-                <h3>{cast.original_name}</h3>
-                <h2>{cast.character ? cast.character : "엑스트라"} 역</h2>
-              </figcaption>
-            </div>
-          ))
-        )}
-      </CreditBox>
-      <Title>
-        <span>
-          <RiMovie2Fill />
-          유사한영화들
-        </span>
-        <span>({SimilarData?.results.length})</span>
-        <TitleLine></TitleLine>
-      </Title>
-      <FigureBox>
-        {SimilarData?.results.map((movie) => (
-          <>
-            <figure key={movie.id}>
-              <img
-                src={
-                  movie.poster_path
-                    ? makeImagePath(movie.poster_path, "w500")
-                    : "/no-image.jpg"
-                }
-                alt=""
-              />
-            </figure>
-          </>
-        ))}
-      </FigureBox>
-    </Wrapper>
+            <TitleLine></TitleLine>
+          </Title>
+          <CreditBox>
+            {creditLoading ? (
+              <p>출연진 정보를 준비중입니다.</p>
+            ) : (
+              creditData?.slice(0, 8).map((cast, index) => (
+                <div key={cast.id}>
+                  <figure>
+                    <img
+                      src={
+                        cast.profile_path
+                          ? makeImagePath(cast.profile_path, "w500")
+                          : "/no-image.jpg"
+                      }
+                      alt=""
+                    />
+                  </figure>
+                  <figcaption>
+                    <h3>{cast.original_name}</h3>
+                    <h2>{cast.character ? cast.character : "엑스트라"} 역</h2>
+                  </figcaption>
+                </div>
+              ))
+            )}
+          </CreditBox>
+          <Title>
+            <span>
+              <RiMovie2Fill />
+              유사한영화들
+            </span>
+            <span>({SimilarData?.results.length})</span>
+            <TitleLine></TitleLine>
+          </Title>
+          <FigureBox>
+            {SimilarData?.results.map((movie) => (
+              <>
+                <figure key={movie.id}>
+                  <img
+                    src={
+                      movie.poster_path
+                        ? makeImagePath(movie.poster_path, "w500")
+                        : "/no-image.jpg"
+                    }
+                    alt=""
+                  />
+                </figure>
+              </>
+            ))}
+          </FigureBox>
+        </Wrapper>
+      )}
+    </>
   );
 };
 
