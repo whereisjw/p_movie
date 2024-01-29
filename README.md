@@ -18,3 +18,7 @@
 - 모달창 형태로 상세페이지를 출력합니다.
 - Swiper 라이브러리를 사용하지 않고 Framer-motion의 애니메이션을 이용해 슬라이드를 구현했습니다.
 - Typescript를 사용해서 웹사이트를 구현하는 경험을 해보았습니다.
+
+
+### 사이트에 대한 상세 기술은 아래 노션링크를 참고해주세요
+https://lively-relative-5c2.notion.site/Movie-Magic-60f57a30e3df4196a33a236cc3c3a9fc?pvs=4
