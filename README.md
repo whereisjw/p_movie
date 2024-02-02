@@ -5,10 +5,10 @@
 
 </aside>
 <img alt="" src='https://file.notion.so/f/f/78150325-8f44-4b57-8597-f5ab09285f8c/091ac017-bf5e-4d48-a2d4-d9721b2842fa/Untitled.png?id=62e84dc9-0137-4604-a542-9d7c439d2bf4&table=block&spaceId=78150325-8f44-4b57-8597-f5ab09285f8c&expirationTimestamp=1706666400000&signature=WGb3_V5ND7GyDL0N3qmf61eC8s9vCH7y3O17mjt7z4M&downloadName=Untitled.png'/>
-- **풀스택엔지니어 / 참여인원1명**
-- **사용기술**
-  - FE : Reactjs, Styled-components, Framer-motion, TMDB api
-  - Infra: github
+### **풀스택엔지니어 / 참여인원1명**
+### **사용기술**
+  #### FE : Reactjs, Styled-components, Framer-motion, TMDB api
+  #### Infra: github
 
 ---
 
